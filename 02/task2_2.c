@@ -13,14 +13,14 @@ int main() {
                     {3, 3, 3}};
     int c[N][N];
 
-    for (size_t i = 0; i < N; ++i) {
-        for (size_t j = 0; j < N; ++j) {
+    for (size_t j = 0; j < N; ++j) {
+        for (size_t i = 0; i < N; ++i) {
             c[i][j] = a[i][j] * b[i][j];
         }
     }
 
     FILE * output;
-    output = fopen("output1.txt", "w");
+    output = fopen("output2.txt", "w");
 
     for (size_t x = 0; x < N; x++)
     {
