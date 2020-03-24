@@ -25,21 +25,23 @@ int main() {
         }
     }
 
-    printf("Result matrix 1 is: \n");
+    FILE * output;
+    output = fopen("output.txt", "w");
+
     for (size_t x = 0; x < N; x++)
     {
         for (size_t y = 0; y < N; y++)
-            printf("%d ", c[x][y]);
-        printf("\n");
+            fprintf(output,"%d ", c[x][y]);
+        fprintf(output,"\n");
     }
 
-    printf("Result matrix 2 is: \n");
     for (size_t x = 0; x < N; x++)
     {
         for (size_t y = 0; y < N; y++)
-            printf("%d ", d[x][y]);
-        printf("\n");
+            fprintf(output,"%d ", d[x][y]);
+        fprintf(output,"\n");
     }
+    fclose(output);
 
     return 0;
 }
