@@ -1,0 +1,53 @@
+$ /usr/bin/time -v ./ex21
+
+Work took 2.113151 seconds
+Matrix A:
+
+
+Work took 2.113151 seconds
+        Command being timed: "./ex21"
+        User time (seconds): 38.05
+        System time (seconds): 12.56
+        Percent of CPU this job got: 140%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 0:36.07
+        Average shared text size (kbytes): 0
+        Average unshared data size (kbytes): 0
+        Average stack size (kbytes): 0
+        Average total size (kbytes): 0
+        Maximum resident set size (kbytes): 10829900
+        Average resident set size (kbytes): 0
+        Major (requiring I/O) page faults: 0
+        Minor (reclaiming a frame) page faults: 2707708
+        Voluntary context switches: 11
+        Involuntary context switches: 624
+        Swaps: 0
+        File system inputs: 0
+        File system outputs: 0
+        Socket messages sent: 0
+        Socket messages received: 0
+        Signals delivered: 0
+        Page size (bytes): 4096
+        Exit status: 0
+
+
+User time (CPU time): Gesamtdauer der CPU-Zeit, die das Programm für die Ausführung benötigt
+(kann System, Benutzer oder beides sein). Wird normalerweise über alle Threads summiert.
+Nicht annähernd so genau wie der wall clock time.
+
+wall clock: Zeitspanne zw. dem Start und Ende eines Prozesses. 
+Das wichtigste Ziel der Leistungsoptimierung ist die Reduzierung der Ausführungszeit
+einer wall clock.
+Elapsed time sollte kürzer als die CPU time sein.
+
+system time: Zeit, die für die Kernelfunktionen (z.B. Systemaufrufe) benötigt wird.
+
+Maximum resident set size gibt die maximale Speichermenge an, die von einem Befehl verwendet wird.
+Auf diese Weise können wir bestimmen, wie viel Speicher unser Code verwendet.
+
+User time ist etwas länger als der wall clock (Unterschied 02.00 Sekunden). 
+Summe vom user und systeme time (50.61) weicht vom wall clock(36.07) ab, hier gibt es einen 
+Unterschied von 15.54 Sekunden. Besser wäre es wenn die Sumem vom wall clock leicht abweichen würde.
+Elapsed time ist kürzer als die CPU time.
+
+time measurement function of OpenMP (wtime): Work took 2.127784 seconds
+--> langsamer (+ 0.014633 Sekunden)

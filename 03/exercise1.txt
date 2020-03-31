@@ -1,0 +1,29 @@
+Homework 3
+
+Exercise 1
+This exercise should get you familiar with basic OpenMP variables.
+
+Tasks:
+	- Write a parallel "Hello World" in OpenMP where each thread prints its own thread number and the total number of threads.
+	  see omp_hello1.c file
+
+	- Run it several times. What can you observe regarding the order of output lines? How can this be fixed?
+	  If you run it several times you can see that dynamic scheduling is not deterministic. Everytime you run the programm,
+	  different threads can run different chunks of work. It's also possible that a thread might don't do any work because
+	  another thread is quicker and do more work. It might be possible for one thread to do all of the work.
+	  The order of output is random.
+	  It is piped through the sort utility.
+
+	- Change your program such that all threads print their own thread number but only a single thread prints the total number of threads.
+	  see omp_hello.c file
+
+	- What happens when you nest two or more parallel regions?
+	  The intuitive method of implementing nested parallelism is to nest two or more OpenMp parallel regions. 
+	  The outer parallel are is set to produce a fixed number of threads and an additional 
+	  parallel are is set to produce a smaller fixed number of threads.
+	  Nesting parallel regions provides an immediate way to allow more threads to participate in the computation.
+	  OpenMp thread that encounters a nested parallel OpenMp region serzializes the section
+
+	  OpenMP parallel regions can be nested inside each other. If nested parallelism is disabled, 
+	  then the new team created by a thread encountering a parallel construct inside a parallel region 
+	  consists only of the encountering thread. If nested parallelism is enabled, then the new team may consist of more than one thread.

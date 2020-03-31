@@ -2,10 +2,9 @@ CFLAGS = -std=c99 -O2
 
 .PHONY: all clean
 
-all: task
+all: HelloWorld
 
 clean:
-	$(RM) task2 task2.o
+	$(RM) HelloWorld HelloWorld.o
 
-task2: task.c task.o
-
+task2: HelloWorld.c HelloWorld.o
