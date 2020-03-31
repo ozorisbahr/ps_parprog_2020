@@ -1,9 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <omp.h>
 
-int main() {
+int main(int *argc, char *argv[]) {
 
-    printf("Hello World!\n");
+
+    #pragma omp parallel
+    {
+        printf("Hello World from Thread %d\n", omp_get_thread_num());
+    }
 
     return 0;
 }
