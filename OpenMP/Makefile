@@ -1,10 +1,35 @@
-CFLAGS = -std=c99 -O2
+CC = gcc
+LD = gcc
 
-.PHONY: all clean
+OBJ = HelloWorld.o
+TARGET = HelloWorld
 
-all: HelloWorld
+# TODO add OpenMP flag here
+CFLAGS = -fopenmp -O2 -Wall -std=c99
+LDLIBS =
+INCLUDES =
+
+SRC_DIR =
+BUILD_DIR =
+VPATH =
+
+# Rules
+all: $(TARGET)
+
+$(TARGET).o: $(TARGET).c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $^ -o $@
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $^ -o $@
+
+run: $(TARGET)
+	./$(TARGET)
 
 clean:
-	$(RM) HelloWorld HelloWorld.o
+	rm -f *.o $(TARGET)
 
-task2: HelloWorld.c HelloWorld.o
+.PHONY: clean
+
+# Dependencies
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) $(INCLUDES) $(TARGET).o -o $(TARGET)
