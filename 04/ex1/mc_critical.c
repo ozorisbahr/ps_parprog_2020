@@ -9,11 +9,9 @@
 #include <errno.h>
 #include <omp.h>
 
-#define N 50000
+#define N 500000000
 
 int main() {
-
-    srand(0);
 
     int circle_points = 0;
     int square_points = 0;
@@ -25,14 +23,16 @@ int main() {
 
 #pragma omp parallel
     {
-#pragma omp for schedule (guided)
+        unsigned int my_seed = omp_get_thread_num();
+
+#pragma omp for shared(circle_points, square_points)
         for (int i = 0; i < N; i++) {
 
             // Generate random point x.
-            double x = (double) rand() / RAND_MAX;
+            double x = (double) rand_r(&my_seed) / RAND_MAX;
 
             // Generate random point y.
-            double y = (double) rand() / RAND_MAX;
+            double y = (double) rand_r(&my_seed) / RAND_MAX;
 
             // Calculate distance from (x, y) to origin.
             double distance = x * x + y * y;
