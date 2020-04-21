@@ -6,7 +6,7 @@ int main() {
 
     int i, j, a[1000][1000];
 
-    #pragma omp parallel
+    #pragma omp parallel private(j)
     {
     #pragma omp for schedule(dynamic, 4)
         for (int i = 0; i < 1000; i++)
