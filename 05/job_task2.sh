@@ -17,7 +17,7 @@
 #$ -j yes
 
 # Parallel environment for using OpenMP, allocates 8 cores on a single node
-#$ -pe openmp 8
+#$ qrsh -pe openmp 8
 
 # Alocate 4 GB memory for each core
 #$ -l h_vmem=4G
