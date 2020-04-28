@@ -1,5 +1,6 @@
 // gcc -O3 -fopenmp ex1.c -o ex1
 // export OMP_NUM_THREADS=4 / 2 / 1
+// OMP_PLACES=cores / threads(4) / sockets
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,7 +8,7 @@
 
 int main() {
 
-    int N = 200000;
+    int N = 100000000;
     int count = 0;
 
     double start;
@@ -15,14 +16,14 @@ int main() {
     start = omp_get_wtime();
 
     //                              close / spread
-    #pragma omp parallel for proc_bind(master)
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                for(int k = 0; k < N; k++) {
-                    count++;
-                }
-            }
+    #pragma omp parallel proc_bind(close)
+    {
+        #pragma omp for
+        for (int i = 0; i < N; i++) {
+            #pragma omp atomic
+                count++;
         }
+    }
         end = omp_get_wtime();
 
         printf("Time: %f sec with N: %d\n", end - start, N);
@@ -33,7 +34,7 @@ int main() {
 /* Benchmark: (in seconds)
  * ----------------------------------
  * Threads | Master | Close | Spread
- *    4    |   3.7  |  3.7  |   3.7
+ *    4    |   3.3  |  3.7  |   3.7
  *    2    |   6.2  |  6.2  |   6.3
  *    1    |  12.1  | 12.1  |  12.1
  * ----------------------------------
