@@ -30,36 +30,34 @@ int calculate_folder_size(const char *path) {
     struct dirent *element;
     size_t size = 4096;
 
-
+    // iterate through all elements in the folder, until element = NULL
+    // readdir always returns the next element in the folder
     for (element = readdir(folder); element != NULL; element = readdir(folder)) {
 
+        long path_length = sizeof(char) * (strlen(path) + strlen(element->d_name) + 2);
+        char *name = (char *) malloc(path_length);
 
-#pragma omp parallel
-        {
-            long path_length = sizeof(char) * (strlen(path) + strlen(element->d_name) + 2);
-            char *name = (char *) malloc(path_length);
-            strcpy(name, path);
-            strcpy(name + strlen(path), "/");
-            strcpy(name + strlen(path) + 1, element->d_name);
+        strcpy(name, path);
+        strcpy(name + strlen(path), "/");
+        strcpy(name + strlen(path) + 1, element->d_name);
 
-            if (element->d_type == DT_DIR) {
-                if (strcmp(element->d_name, ".") != 0 && strcmp(element->d_name, "..") != 0) {
+        if (element->d_type == DT_DIR) {
+            if (strcmp(element->d_name, ".") != 0 && strcmp(element->d_name, "..") != 0) {
 
-                    // recursive call of calculate_folder_size
+                // recursive call of calculate_folder_size
 
-                    size += calculate_folder_size(name);
-                }
-            } else {
-
-                int status = lstat(name, &sb);
-                if (status == 0) {
-                    size += sb.st_size;
-                } else {
-                    perror("LSTAT ERROR\n");
-                }
+                size += calculate_folder_size(name);
             }
-            free(name);
+        } else {
+
+            int status = lstat(name, &sb);
+            if (status == 0) {
+                size += sb.st_size;
+            } else {
+                perror("LSTAT ERROR\n");
+            }
         }
+        free(name);
     }
 
 
@@ -104,7 +102,7 @@ int main(int argc, char **argv) {
 
 #pragma omp parallel shared(str)
     {
-#pragma omp sinlge
+#pragma omp single
         {
             folder_size = calculate_folder_size(str);
         }
