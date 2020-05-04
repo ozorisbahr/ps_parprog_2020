@@ -1,6 +1,6 @@
 // gcc -O3 -fopenmp ex1.c -o ex1
 // export OMP_NUM_THREADS=4 / 2 / 1
-// OMP_PLACES=cores / threads(4) / sockets
+// OMP_PLACES=threads4 / cores / sockets
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -39,6 +39,7 @@ int main() {
  *    1    |  12.1  | 12.1  |  12.1
  * ----------------------------------
  * If we change the Affinity we almost get the same speeds if doesnt
- * matter if it is Master, Close or Spread Affinity.
+ * matter if it is Master, Close or Spread Affinity. Same with
+ * OMP_PLACES: Threads / Cores / Sockets didnt make a speed difference.
  * Only with different Thread numbers we see a speed difference.
  * */
