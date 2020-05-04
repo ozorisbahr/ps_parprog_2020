@@ -64,6 +64,25 @@ int main(int argc, char **argv) {
     for (int t = 0; t < T; t++) {
         // todo implement heat propagation, if at corner, use own heat value
         // todo make sure the heat source stays the same
+        for(long long i = 0; i < N; i++) {
+            if(i == source_x) {
+                B[i] = A[i];
+                continue;
+            }
+
+            value_t tc = A[i];
+
+            value_t t1 = (i != 0) ? A[i - 1] : tc;
+            value_t tr = (i != N - 1) ? A[i + 1] : tc;
+
+            B[i] = tc + 0.2 * (t1 + tr + (-2 *tc));
+        }
+
+        Vector H = A;
+        A=B;
+        B=H;
+
+        // todo end
 
         // every 1000 steps show intermediate step
         if (!(t % 1000)) {
