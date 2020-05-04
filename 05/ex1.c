@@ -16,7 +16,7 @@ int main() {
     start = omp_get_wtime();
 
     //                              close / spread
-    #pragma omp parallel proc_bind(close)
+    #pragma omp parallel proc_bind(spread)
     {
         #pragma omp for
         for (int i = 0; i < N; i++) {
