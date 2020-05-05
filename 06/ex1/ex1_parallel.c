@@ -1,3 +1,4 @@
+// Group: Özcan, Bahr, Portscher
 // Program that recursively calculates a folder size (with all sub-folders) using OpenMP and Tasks.
 
 #include <errno.h>
@@ -126,3 +127,4 @@ int main(int argc, char **argv) {
 
 // Some input from stackoverflow user Hristo Iliev
 // https://stackoverflow.com/users/1374437/hristo-iliev
+// https://stackoverflow.com/questions/61558290/parallelizing-recursion-in-a-for-loop-using-readdir
