@@ -1,3 +1,4 @@
+// Group Özcan, Bahr, Portscher
 // Program that recursively calculates a folder size (with all sub-folders) using OpenMP and Tasks.
 
 #include <errno.h>
