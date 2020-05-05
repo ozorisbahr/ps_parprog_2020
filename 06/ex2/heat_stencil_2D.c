@@ -35,21 +35,21 @@ int main(int argc, char **argv) {
     // ---------- setup ----------
 
     // create a buffer for storing temperature fields
-    double *A =  malloc(sizeof(double) * N * N);
+    double *A = malloc(sizeof(double) * N * N);
 
-    if(!A) PERROR_GOTO(error_a);
+    if (!A) PERROR_GOTO(error_a);
 
     // set up initial conditions in A
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            A[IND(i,j)] = 273; // temperature is 0° C everywhere (273 K)
+            A[IND(i, j)] = 273; // temperature is 0° C everywhere (273 K)
         }
     }
 
     // and there is a heat source
     int source_x = N / 4;
     int source_y = N / 4;
-    A[IND(source_x,source_y)] = 273 + 60;
+    A[IND(source_x, source_y)] = 273 + 60;
 
     printf("Initial:");
     printTemperature(A, N, N);
@@ -59,30 +59,30 @@ int main(int argc, char **argv) {
 
     // create a second buffer for the computation
     double *B = malloc(sizeof(double) * N * N);
-    if(!B) PERROR_GOTO(error_b);
+    if (!B) PERROR_GOTO(error_b);
     // for each time step ..
     for (int t = 0; t < T; t++) {
         // todo implement heat propagation, if at corner, use own heat value
         // todo make sure the heat source stays the same
-        for(long long i = 0; i < N; i++) {
-            if(i == source_x) {
-                B[i] = A[i];
-                continue;
+        #pragma omp parallel for collapse(2) num_threads(threads)
+        for (long long i = 0; i < N; i++) {
+            for (long long j = 0; j < N; j++) {
+                if (i == source_x) {
+                    if (j == source_y) {
+                        B[IND(i, j)] = A[IND(i, j)];
+                        continue;
+                    }
+                    long top = (i == 0 ? 0 : i - 1);
+                    long bottom = (i == (N - 1) ? (N - 1) : i + 1);
+                    long left = (j == 0 ? 0 : j - 1);
+                    long right = (j == (N - 1) ? (N - 1) : j + 1);
+
+                    B[IND(i, j)] = 0.5 * A[IND(i, j)] +
+                                   (A[IND(top, j)] + A[IND(i, left)] + A[IND(i, right)] + A[IND(bottom, j)]) / 8;
+                }
             }
-
-            value_t tc = A[i];
-
-            value_t t1 = (i != 0) ? A[i - 1] : tc;
-            value_t tr = (i != N - 1) ? A[i + 1] : tc;
-
-            B[i] = tc + 0.2 * (t1 + tr + (-2 *tc));
         }
-
-        Vector H = A;
-        A=B;
-        B=H;
-
-        // todo end
+        memcpy(A, B, sizeof(double)*N*N);
 
         // every 1000 steps show intermediate step
         if (!(t % 1000)) {
